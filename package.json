@@ -26,6 +26,7 @@
     },
     "dependencies": {
         "emoji-js": "^3.5.0",
+        "emojionearea": "^3.0.0",
         "laravel-echo": "^1.8.1",
         "pusher-js": "^7.0.0"
     }

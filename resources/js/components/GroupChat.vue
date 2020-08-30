@@ -20,6 +20,7 @@
                             <div class="header">
                                 <strong class="primary-font">{{ conversation.user.name }}</strong>
                             </div>
+                            <!--                            v-html="$options.filters.formatMessage(conversation.message)"-->
                             <p>
                                 {{ conversation.message }}
                             </p>
@@ -27,12 +28,13 @@
                     </li>
                 </ul>
             </div>
-           <span>:)</span> <span v-show="typing" class="help-block" style="font-style: italic;">
+            <span>  </span> <span v-show="typing" class="help-block" style="font-style: italic;">
                             @{{ user.name }} is typing...
                         </span>
             <div class="panel-footer">
                 <div class="input-group">
-                    <input type="text" class="form-control input-sm" placeholder="Type your message here..."
+                    <input :id="'emojis-show'+ group.id" type="text" class="form-control input-sm"
+                           placeholder="Type your message here..."
                            v-model="message" @keydown="isTyping" @keyup.enter="store()" autofocus/>
                     <span class="input-group-btn">
                             <button class="btn btn-warning btn-sm" style="height: 100%" @click.prevent="store()">
@@ -61,6 +63,13 @@ export default {
         let _this = this;
         this.listenForTypePing(_this);
     },
+    filters: {
+        formatMessage: function (value) {
+            if (!value) return ''
+            value = value.toString()
+            return emoji.replace_colons(value)
+        }
+    },
     methods: {
         isTyping() {
             let channel = Echo.private('chat');
@@ -74,6 +83,20 @@ export default {
             container.scrollTop = container.scrollHeight;
         },
         load() {
+             $("#emojis-show" + this.group.id).emojioneArea({
+                filtersPosition: "bottom",
+                search: false,
+                hidePickerOnBlur: false,
+                events: {
+                    keydown: function () {
+                        let channel = Echo.private('chat');
+                        channel.whisper('typing', {
+                            user: Laravel.user,
+                            typing: true
+                        });
+                    }
+                }
+            });
             axios.get('/conversations',
                 {
                     params: {
@@ -88,6 +111,7 @@ export default {
                 });
         },
         store() {
+            this.message = $("#emojis-show" + this.group.id)[0].emojioneArea.getText();
             axios.post('/conversations', {message: this.message, group_id: this.group.id})
                 .then((response) => {
                     this.message = '';

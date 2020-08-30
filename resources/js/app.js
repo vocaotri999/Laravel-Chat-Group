@@ -8,7 +8,6 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 window.Bus = new Vue();
-window.emoji = new EmojiConvertor();
 
 /**
  * The following block of code may be used to automatically register your

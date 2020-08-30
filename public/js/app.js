@@ -2032,6 +2032,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: ['group'],
   data: function data() {
@@ -2050,6 +2052,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
     this.listenForTypePing(_this);
   },
+  filters: {
+    formatMessage: function formatMessage(value) {
+      if (!value) return '';
+      value = value.toString();
+      return emoji.replace_colons(value);
+    }
+  },
   methods: {
     isTyping: function isTyping() {
       var channel = Echo["private"]('chat');
@@ -2065,6 +2074,20 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     load: function load() {
       var _this2 = this;
 
+      $("#emojis-show" + this.group.id).emojioneArea({
+        filtersPosition: "bottom",
+        search: false,
+        hidePickerOnBlur: false,
+        events: {
+          keydown: function keydown() {
+            var channel = Echo["private"]('chat');
+            channel.whisper('typing', {
+              user: Laravel.user,
+              typing: true
+            });
+          }
+        }
+      });
       axios.get('/conversations', {
         params: {
           group_id: this.group.id
@@ -2102,6 +2125,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     store: function store() {
       var _this3 = this;
 
+      this.message = $("#emojis-show" + this.group.id)[0].emojioneArea.getText();
       axios.post('/conversations', {
         message: this.message,
         group_id: this.group.id
@@ -48008,7 +48032,7 @@ var render = function() {
           )
         ]),
         _vm._v(" "),
-        _c("span", [_vm._v(":)")]),
+        _c("span"),
         _vm._v(" "),
         _c(
           "span",
@@ -48046,6 +48070,7 @@ var render = function() {
               ],
               staticClass: "form-control input-sm",
               attrs: {
+                id: "emojis-show" + _vm.group.id,
                 type: "text",
                 placeholder: "Type your message here...",
                 autofocus: ""
@@ -60367,8 +60392,7 @@ window._ = __webpack_require__(/*! lodash */ "./node_modules/lodash/lodash.js");
  */
 
 try {
-  window.Popper = __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js")["default"];
-  window.$ = window.jQuery = __webpack_require__(/*! jquery */ "./node_modules/jquery/dist/jquery.js");
+  window.Popper = __webpack_require__(/*! popper.js */ "./node_modules/popper.js/dist/esm/popper.js")["default"]; // window.$ = window.jQuery = require('jquery');
 
   __webpack_require__(/*! bootstrap */ "./node_modules/bootstrap/dist/js/bootstrap.js");
 
