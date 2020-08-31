@@ -31,4 +31,9 @@ class HomeController extends Controller
 
         return view('home', ['groups' => $groups, 'users' => $users, 'user' => $user]);
     }
+
+    public function getUserOther()
+    {
+        return User::where('id', '<>', auth()->user()->id)->get();
+    }
 }

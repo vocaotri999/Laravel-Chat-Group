@@ -27,6 +27,10 @@ Broadcast::channel('groups.{group}', function ($user, Group $group) {
     return $group->hasUser($user->id);
 });
 
+//Broadcast::channel('chat', function ($user) {
+//    return Auth::check();
+//});
+
 Broadcast::channel('chat', function ($user) {
-    return Auth::check();
+    return $user;
 });

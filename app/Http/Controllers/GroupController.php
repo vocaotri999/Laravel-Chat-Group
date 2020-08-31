@@ -14,8 +14,11 @@ class GroupController extends Controller
 
         $users = collect(request('users'));
         $users->push(auth()->user()->id);
-
-        $group->users()->attach($users);
+        $fill = [
+            $users[0]['id'],
+            $users[1]
+        ];
+        $group->users()->attach($fill);
         broadcast(new GroupCreated($group))->toOthers();
 
         return $group;

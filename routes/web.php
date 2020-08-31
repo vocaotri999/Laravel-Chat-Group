@@ -22,3 +22,6 @@ Route::resource('conversations', 'ConversationController');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::post('/userOnline/{id}','UserOnlineController@online');
+Route::post('/userOffline/{id}','UserOnlineController@offline');
+Route::get('/userOther','HomeController@getUserOther');

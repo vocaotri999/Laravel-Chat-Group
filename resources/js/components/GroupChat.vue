@@ -28,7 +28,7 @@
                     </li>
                 </ul>
             </div>
-            <span>  </span> <span v-show="typing" class="help-block" style="font-style: italic;">
+            <span>&nbsp;</span> <span v-show="typing" class="help-block" style="font-style: italic;">
                             @{{ user.name }} is typing...
                         </span>
             <div class="panel-footer">
@@ -83,7 +83,7 @@ export default {
             container.scrollTop = container.scrollHeight;
         },
         load() {
-             $("#emojis-show" + this.group.id).emojioneArea({
+            $("#emojis-show" + this.group.id).emojioneArea({
                 filtersPosition: "bottom",
                 search: false,
                 hidePickerOnBlur: false,
