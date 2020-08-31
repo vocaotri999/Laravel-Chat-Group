@@ -99,7 +99,7 @@
         let thisClick = "";
         if ($('.emojionearea-button-close').parent().hasClass('active'))
             thisClick = $('.emojionearea-button-close');
-        if (!container.is(e.target) && container.has(e.target).length === 0 && !thisClick.is(e.target) && thisClick.has(e.target).length === 0 && thisClick !== "") {
+        if (thisClick && !container.is(e.target) && container.has(e.target).length === 0 && !thisClick.is(e.target) && thisClick.has(e.target).length === 0 && thisClick !== "") {
             if ($('.emojionearea-button-close').parent().hasClass('active'))
                 $('.emojionearea-button-close').click();
         }

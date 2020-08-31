@@ -13,7 +13,7 @@ class UserOnlineController extends Controller
     {
         $user = User::find($id);
         $user->status = '1';
-        $user->last_online = date('Y-m-d h:i:s');
+        $user->last_online = date('Y-m-d H:i:s');
         $user->save();
         broadcast(new UserOnline($user));
         return $user;
