@@ -104,6 +104,14 @@
                 $('.emojionearea-button-close').parent().removeClass('active')
         }
     });
+    $(document).delegate('html', 'click', function () {
+        let handle = setInterval(function () {
+            $('.chat li[user-data="' + Laravel.user.id + '"]').addClass('text-right');
+        }, 300)
+        if ($('.chat li[user-data="' + Laravel.user.id + '"]').hasClass('text-right')) {
+            clearInterval(handle)
+        }
+    })
 </script>
 
 </body>

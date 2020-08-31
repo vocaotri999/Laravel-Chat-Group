@@ -2116,11 +2116,24 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       var _this2 = this;
 
       var groupID = this.group_id;
+
+      var _this = this;
+
       $("#emojis-show" + this.group.id).emojioneArea({
         filtersPosition: "bottom",
         search: false,
         hidePickerOnBlur: false,
         events: {
+          keyup: function keyup(editor, evt) {
+            if (evt.keyCode === 13) {
+              /* do your processing here */
+              _this.store();
+              /* prevent event from bubbling any further */
+
+
+              evt.stopPropagation();
+            }
+          },
           keydown: function keydown() {
             var channel = Echo["private"]('chat');
             channel.whisper('typing', {
@@ -69282,25 +69295,29 @@ var render = function() {
             "ul",
             { staticClass: "chat" },
             _vm._l(_vm.conversations, function(conversation) {
-              return _c("li", [
-                _vm._m(0, true),
-                _vm._v(" "),
-                _c("div", { staticClass: "chat-body clearfix" }, [
-                  _c("div", { staticClass: "header" }, [
-                    _c("strong", { staticClass: "primary-font" }, [
-                      _vm._v(_vm._s(conversation.user.name))
-                    ])
-                  ]),
+              return _c(
+                "li",
+                { attrs: { "user-data": conversation.user.id } },
+                [
+                  _vm._m(0, true),
                   _vm._v(" "),
-                  _c("p", [
-                    _vm._v(
-                      "\n                            " +
-                        _vm._s(conversation.message) +
-                        "\n                        "
-                    )
+                  _c("div", { staticClass: "chat-body clearfix" }, [
+                    _c("div", { staticClass: "header" }, [
+                      _c("strong", { staticClass: "primary-font" }, [
+                        _vm._v(_vm._s(conversation.user.name))
+                      ])
+                    ]),
+                    _vm._v(" "),
+                    _c("p", [
+                      _vm._v(
+                        "\n                            " +
+                          _vm._s(conversation.message) +
+                          "\n                        "
+                      )
+                    ])
                   ])
-                ])
-              ])
+                ]
+              )
             }),
             0
           )

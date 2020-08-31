@@ -12,7 +12,7 @@
         <div class="collapse" :id="'collapseExample'+ group.id">
             <div class="panel-body chat-panel">
                 <ul class="chat">
-                    <li v-for="conversation in conversations">
+                    <li v-for="conversation in conversations" :user-data="conversation.user.id">
                         <span class="chat-img pull-left">
                             <img src="http://placehold.it/50/55C1E7/fff&text=U" alt="User Avatar" class="img-circle"/>
                         </span>
@@ -47,6 +47,7 @@
 </template>
 
 <script>
+
 export default {
     props: ['group'],
     data() {
@@ -84,12 +85,21 @@ export default {
             container.scrollTop = container.scrollHeight;
         },
         load() {
-            let groupID = this.group_id
+            let groupID = this.group_id;
+            let _this = this;
             $("#emojis-show" + this.group.id).emojioneArea({
                 filtersPosition: "bottom",
                 search: false,
                 hidePickerOnBlur: false,
                 events: {
+                    keyup: function (editor, evt) {
+                        if (evt.keyCode === 13) {
+                            /* do your processing here */
+                            _this.store();
+                            /* prevent event from bubbling any further */
+                            evt.stopPropagation();
+                        }
+                    },
                     keydown: function () {
                         let channel = Echo.private('chat');
                         channel.whisper('typing', {
