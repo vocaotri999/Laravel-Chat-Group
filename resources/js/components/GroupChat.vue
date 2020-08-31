@@ -111,7 +111,10 @@ export default {
                 });
         },
         store() {
-            this.message = $("#emojis-show" + this.group.id)[0].emojioneArea.getText();
+            let nowEmjisArea = $("#emojis-show" + this.group.id);
+            this.message = nowEmjisArea[0].emojioneArea.getText();
+            nowEmjisArea[0].emojioneArea.setText("");
+
             axios.post('/conversations', {message: this.message, group_id: this.group.id})
                 .then((response) => {
                     this.message = '';

@@ -2165,7 +2165,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     store: function store() {
       var _this3 = this;
 
-      this.message = $("#emojis-show" + this.group.id)[0].emojioneArea.getText();
+      var nowEmjisArea = $("#emojis-show" + this.group.id);
+      this.message = nowEmjisArea[0].emojioneArea.getText();
+      nowEmjisArea[0].emojioneArea.setText("");
       axios.post('/conversations', {
         message: this.message,
         group_id: this.group.id
