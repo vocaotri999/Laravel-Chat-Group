@@ -101,7 +101,7 @@
             thisClick = $('.emojionearea-button-close');
         if (thisClick && !container.is(e.target) && container.has(e.target).length === 0 && !thisClick.is(e.target) && thisClick.has(e.target).length === 0 && thisClick !== "") {
             if ($('.emojionearea-button-close').parent().hasClass('active'))
-                $('.emojionearea-button-close').click();
+                $('.emojionearea-button-close').parent().removeClass('active')
         }
     });
 </script>
