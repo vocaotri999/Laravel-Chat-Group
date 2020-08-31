@@ -2082,7 +2082,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       message: '',
       user: '',
       group_id: this.group.id,
-      typing: false
+      typing: false,
+      now_group_id: ''
     };
   },
   mounted: function mounted() {
@@ -2114,6 +2115,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     load: function load() {
       var _this2 = this;
 
+      var groupID = this.group_id;
       $("#emojis-show" + this.group.id).emojioneArea({
         filtersPosition: "bottom",
         search: false,
@@ -2123,6 +2125,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             var channel = Echo["private"]('chat');
             channel.whisper('typing', {
               user: Laravel.user,
+              group_id: groupID,
               typing: true
             });
           }
@@ -2193,10 +2196,12 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
       Echo["private"]('chat').listenForWhisper('typing', function (e) {
         _this5.user = e.user;
-        _this5.typing = e.typing; // remove is typing indicator after 1.2s
+        _this5.typing = e.typing;
+        $("#collapseExample" + e.group_id).find('.help-block').show(); // remove is typing indicator after 1.2s
 
         setTimeout(function () {
           _this.typing = false;
+          $("#collapseExample" + e.group_id).find('.help-block').hide();
         }, 1200);
       });
     }
@@ -69306,16 +69311,8 @@ var render = function() {
         _c(
           "span",
           {
-            directives: [
-              {
-                name: "show",
-                rawName: "v-show",
-                value: _vm.typing,
-                expression: "typing"
-              }
-            ],
             staticClass: "help-block",
-            staticStyle: { "font-style": "italic" }
+            staticStyle: { "font-style": "italic", display: "none" }
           },
           [
             _vm._v(

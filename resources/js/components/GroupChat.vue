@@ -28,7 +28,7 @@
                     </li>
                 </ul>
             </div>
-            <span>&nbsp;</span> <span v-show="typing" class="help-block" style="font-style: italic;">
+            <span>&nbsp;</span> <span class="help-block" style="font-style: italic; display: none">
                             @{{ user.name }} is typing...
                         </span>
             <div class="panel-footer">
@@ -55,7 +55,8 @@ export default {
             message: '',
             user: '',
             group_id: this.group.id,
-            typing: false
+            typing: false,
+            now_group_id: ''
         }
     },
     mounted() {
@@ -83,6 +84,7 @@ export default {
             container.scrollTop = container.scrollHeight;
         },
         load() {
+            let groupID = this.group_id
             $("#emojis-show" + this.group.id).emojioneArea({
                 filtersPosition: "bottom",
                 search: false,
@@ -92,6 +94,7 @@ export default {
                         let channel = Echo.private('chat');
                         channel.whisper('typing', {
                             user: Laravel.user,
+                            group_id: groupID,
                             typing: true
                         });
                     }
@@ -134,9 +137,11 @@ export default {
                 .listenForWhisper('typing', (e) => {
                     this.user = e.user;
                     this.typing = e.typing;
+                    $("#collapseExample" + e.group_id).find('.help-block').show()
                     // remove is typing indicator after 1.2s
                     setTimeout(function () {
                         _this.typing = false;
+                        $("#collapseExample" + e.group_id).find('.help-block').hide()
                     }, 1200);
                 });
         }
